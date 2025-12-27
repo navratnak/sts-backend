@@ -1,5 +1,5 @@
 // \backend\src\app.js
-app.set("trust proxy", 1);
+
 import express from "express";
 import cors from "cors";
 import path from "path";
@@ -12,11 +12,14 @@ import websiteSettingRoutes from "./routes/websiteSetting.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const app = express();
+app.set("trust proxy", 1);
 const allowedOrigins = [
   "https://360websolution.es",
   "https://360websolution.es/admin",
 ];
-const app = express();app.use(
+app.use(
   cors({
     origin: function (origin, callback) {
       // allow server-to-server & Postman
