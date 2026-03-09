@@ -9,6 +9,14 @@ export const getAllCategories = async () => {
   return rows;
 };
 
+// Admin site Service Caegory views
+export const getAllCategoriesForServiceView = async () => {
+  const [rows] = await db.query(
+    "SELECT * FROM tbl_servicecategory WHERE website_view_status='1' ORDER BY id ASC",
+  );
+  return rows;
+};
+
 export const getCategoryById = async (id) => {
   const [rows] = await db.query(
     "SELECT * FROM tbl_servicecategory WHERE id=?",

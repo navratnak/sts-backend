@@ -92,7 +92,7 @@ export const removeService = async (req, res) => {
     fs.existsSync(imgPath) && fs.unlinkSync(imgPath);
   }
 
-  await Service.deleteCategory(req.params.id);
+  await Service.deleteService(req.params.id);
   res.json({ success: true, message: "Service Deleted" });
 };
 
@@ -101,13 +101,6 @@ export const viewServicesForClient = async (req, res) => {
   try {
     const rows = await Service.getAllServicesForClient();
 
-    if (!rows || rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No services found",
-      });
-    }
-
     const makeImage = (img) =>
       img ? `${BASE_URL}/uploads/services/${img}` : "";
 
@@ -115,6 +108,7 @@ export const viewServicesForClient = async (req, res) => {
       id: row.id,
       category_id: row.category_id,
       category_name: row.category_name,
+      category_slug: row.category_slug,
       name: row.name,
       sub_title: row.sub_title,
       tagline: row.tagline,

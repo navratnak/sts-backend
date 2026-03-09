@@ -2,6 +2,7 @@ import express from "express";
 import { allowRoles } from "../middleware/role.middleware.js";
 import {
   list,
+  activeCategories,
   create,
   update,
   remove,
@@ -20,9 +21,15 @@ router.get(
   protect,
   allowRoles("admin", "superadmin"),
   activityLogger("Service Category", "View"),
-  list
+  list,
 );
 
+router.get(
+  "/service-category-active",
+  protect,
+  allowRoles("admin", "superadmin"),
+  activeCategories,
+);
 /* CREATE */
 router.post(
   "/service-category",
@@ -30,7 +37,7 @@ router.post(
   allowRoles("admin", "superadmin"),
   upload("service-category").single("image"),
   activityLogger("Service Category", "Create"),
-  create
+  create,
 );
 
 /* UPDATE */
@@ -40,7 +47,7 @@ router.put(
   allowRoles("admin", "superadmin"),
   upload("service-category").single("image"),
   activityLogger("Service Category", "Update"),
-  update
+  update,
 );
 
 /* STATUS TOGGLE */
@@ -49,7 +56,7 @@ router.patch(
   protect,
   allowRoles("admin", "superadmin"),
   activityLogger("Service Category", "Update"),
-  toggleStatus
+  toggleStatus,
 );
 
 /* DELETE (SUPERADMIN ONLY) */
@@ -58,7 +65,7 @@ router.delete(
   protect,
   allowRoles("superadmin"),
   activityLogger("Service Category", "Delete"),
-  remove
+  remove,
 );
 
 //Service Category For Client Router

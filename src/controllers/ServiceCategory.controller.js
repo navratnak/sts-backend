@@ -13,6 +13,11 @@ export const list = async (req, res) => {
   res.json({ success: true, data });
 };
 
+export const activeCategories = async (req, res) => {
+  const data = await Category.getAllCategoriesForServiceView();
+  res.json({ success: true, data });
+};
+
 export const create = async (req, res) => {
   const image = req.file ? req.file.filename : null;
   const permalink = slugify(req.body.name);
@@ -81,17 +86,11 @@ export const remove = async (req, res) => {
   res.json({ success: true, message: "Service category deleted" });
 };
 
+
 // Clent site Service Caegory views
 export const viewCategoriesForClient = async (req, res) => {
   try {
     const rows = await Category.getAllCategoriesForClient();
-
-    if (!rows || rows.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No services Category found",
-      });
-    }
 
     const makeImage = (img) =>
       img ? `${BASE_URL}/uploads/service-category/${img}` : "";

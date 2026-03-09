@@ -64,7 +64,7 @@ export const createService = async (data) => {
       meta_description,
       created_by,
       ip_address,
-    ]
+    ],
   );
 
   return result.insertId;
@@ -115,7 +115,7 @@ export const updateService = async (id, data) => {
       meta_description,
       ip_address,
       id,
-    ]
+    ],
   );
 };
 
@@ -126,11 +126,12 @@ export const deleteService = async (id) => {
 // Clent site Services views
 export const getAllServicesForClient = async () => {
   const [rows] = await db.query(
-    ` SELECT s.*, c.name as category_name
+    ` SELECT s.*, c.name as category_name,
+     c.permalink AS category_slug
     FROM tbl_services s
     JOIN tbl_servicecategory c ON c.id = s.category_id
     WHERE s.website_view_status = '1'
-    ORDER BY s.id DESC`
+    ORDER BY s.id DESC`,
   );
   return rows;
 };

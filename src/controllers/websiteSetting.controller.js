@@ -76,6 +76,7 @@ export const updateWebsiteSetting = async (req, res) => {
 export const viewSiteSettingforAdmin = async (req, res) => {
   try {
     const data = await Setting.getSiteSetting();
+
     if (!data) {
       return res.status(404).json({
         success: false,
@@ -131,7 +132,41 @@ export const viewSiteSettingforClient = async (req, res) => {
         footerlogo_alt: data.footerlogo_alt,
         footerlogo_title: data.footerlogo_title,
         favicon: makeImage(data.favicon),
+        footer_content: data.footer_content,
+        address_map: data.address_map,
+        mobile: data.mobile,
+        mobile2: data.mobile2,
+        whatsapp: data.whatsapp,
+        email: data.email,
+        email2: data.email2,
+        address: data.address,
+        address2: data.address2,
         copyright: data.copyright,
+        facebook: data.facebook,
+        instagram: data.instagram,
+        twitter: data.twitter,
+        telegram: data.telegram,
+        youtube: data.youtube,
+        linkedin: data.linkedin,
+        abouttitle: data.abouttitle,
+        aboutSubtitle: data.aboutSubtitle,
+        aboutTagline: data.aboutTagline,
+        aboutimg: makeImage(data.aboutimg),
+        aboutimg_title: data.aboutimg_title,
+        aboutimg_alt: data.aboutimg_alt,
+        aboutdec: data.aboutdec,
+        welcome_title: data.welcome_title,
+        welcome_tagline: data.welcome_tagline,
+        yearsOf_experience: data.yearsOf_experience,
+        happy_customers: data.happy_customers,
+        completed_construction: data.completed_construction,
+        terms_condition: data.terms_condition,
+        return_policy: data.return_policy,
+        privacy_policy: data.privacy_policy,
+        meta_title: data.meta_title,
+        meta_keyword: data.meta_keyword,
+        meta_description: data.meta_description,
+
         base_url: BASE_URL,
       },
     });

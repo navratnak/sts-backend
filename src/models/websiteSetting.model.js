@@ -55,10 +55,12 @@ export const updateSiteSetting = async (data) => {
     meta_description,
     ip_address,
     updated_by,
+    welcome_title,
+    welcome_tagline,
   } = data;
   await db.query(
     `UPDATE website_setting
-     SET  site_name=?,admin_name=?, user_image=?, facebook=?, instagram=?, twitter=?, telegram=?, youtube=?, linkedin=?, email=?, email2=?, whatsapp=?, mobile=?, mobile2=?, address=?, address2=?, abouttitle=?, aboutSubtitle=?, aboutTagline=?, aboutimg=?, aboutimg_title=?, aboutimg_alt=?, aboutdec=?, homeslider_title=?, homeslider_subtitle=?, homeslider_tagline=?, yearsOf_experience=?, happy_customers=?, completed_construction=?, logo=?, logoimg_title=?, logoimg_alt=?, footerlogo=?, footerlogo_title=?, footerlogo_alt=?, favicon=?, copyright=?, footer_content=?, address_map=?, terms_condition=?, return_policy=?, privacy_policy=?, meta_title=?, meta_keyword=?, meta_description=?, ip_address=?, updated_by=?
+     SET  site_name=?,admin_name=?, user_image=?, facebook=?, instagram=?, twitter=?, telegram=?, youtube=?, linkedin=?, email=?, email2=?, whatsapp=?, mobile=?, mobile2=?, address=?, address2=?, abouttitle=?, aboutSubtitle=?, aboutTagline=?, aboutimg=?, aboutimg_title=?, aboutimg_alt=?, aboutdec=?, homeslider_title=?, homeslider_subtitle=?, homeslider_tagline=?, yearsOf_experience=?, happy_customers=?, completed_construction=?, logo=?, logoimg_title=?, logoimg_alt=?, footerlogo=?, footerlogo_title=?, footerlogo_alt=?, favicon=?, copyright=?, footer_content=?, address_map=?, terms_condition=?, return_policy=?, privacy_policy=?, meta_title=?, meta_keyword=?, meta_description=?, ip_address=?, updated_by=?, welcome_title=?, welcome_tagline=?
     WHERE id=1`,
     [
       site_name,
@@ -108,6 +110,8 @@ export const updateSiteSetting = async (data) => {
       meta_description,
       ip_address,
       updated_by,
-    ]
+      welcome_title,
+      welcome_tagline,
+    ],
   );
 };
