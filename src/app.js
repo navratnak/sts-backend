@@ -51,6 +51,13 @@ app.use("/api/admin", ContactEnqueryRoutes);
 app.use("/api/admin", CareersEnqueryRoutes);
 app.use("/api/admin", JobsRoutes);
 
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Backend Running",
+  });
+});
+
 // For Client
 
 export default app;
