@@ -2,6 +2,7 @@
 
 import express from "express";
 import path from "path";
+import cors from "cors";
 import { fileURLToPath } from "url";
 
 import adminAuthRoutes from "./routes/adminAuth.routes.js";
