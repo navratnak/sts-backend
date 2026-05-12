@@ -9,6 +9,7 @@ const allowedTables = [
   "tbl_newscategory",
   "tbl_news",
   "tbl_industries",
+  "tbl_advertising",
   "tbl_counter",
   "tbl_client",
   "tbl_workingprocess",

@@ -1,27 +1,23 @@
-// backend\src\controllers\Service.controller.js
+// backend\src\controllers\Advertising.controller.js
 import fs from "fs";
 import path from "path";
-import * as Service from "../models/service.model.js";
-import { slugify } from "../utils/slugify.js";
+import * as Advertising from "../models/Advertising.model.js";
 import { updateStatus } from "../models/updateStatus.model.js";
 
 const BASE_URL = process.env.BASE_URL;
-const IMAGE_DIR = "uploads/services";
+const IMAGE_DIR = "uploads/advertising";
 
-export const getServices = async (req, res) => {
-  const data = await Service.getAllServices();
+export const getAdvertising = async (req, res) => {
+  const data = await Advertising.getAllAdvertising();
   res.json({ success: true, data });
 };
 
-export const addService = async (req, res) => {
+export const addAdvertising = async (req, res) => {
   const image = req.files?.image?.[0]?.filename || null;
   const banner_image = req.files?.banner_image?.[0]?.filename || null;
 
-  const permalink = slugify(req.body.name);
-
-  const id = await Service.createService({
+  const id = await Advertising.createAdvertising({
     ...req.body,
-    permalink,
     image,
     banner_image,
     created_by: req.user.id,
@@ -30,91 +26,85 @@ export const addService = async (req, res) => {
 
   res.status(201).json({
     success: true,
-    message: "Service Created !",
+    message: "Advertising Created !",
     id,
   });
 };
 
-export const updateService = async (req, res) => {
-  const service = await Service.getServiceById(req.params.id);
-  if (!service) return res.status(404).json({ message: "Not found" });
+export const updateAdvertising = async (req, res) => {
+  const advertising = await Advertising.getAdvertisingById(req.params.id);
+  if (!advertising) return res.status(404).json({ message: "Not found" });
 
-  let image = service.image;
-  let banner_image = service.banner_image;
+  let image = advertising.image;
+  let banner_image = advertising.banner_image;
 
   if (req.files?.image) {
-    if (service.image) {
-      const oldPath = path.join(IMAGE_DIR, service.image);
+    if (advertising.image) {
+      const oldPath = path.join(IMAGE_DIR, advertising.image);
       fs.existsSync(oldPath) && fs.unlinkSync(oldPath);
     }
     image = req.files.image[0].filename;
   }
 
   if (req.files?.banner_image) {
-    if (service.banner_image) {
-      const oldPath = path.join(IMAGE_DIR, service.banner_image);
+    if (advertising.banner_image) {
+      const oldPath = path.join(IMAGE_DIR, advertising.banner_image);
       fs.existsSync(oldPath) && fs.unlinkSync(oldPath);
     }
     banner_image = req.files.banner_image[0].filename;
   }
 
-  const permalink = slugify(req.body.name);
-
-  await Service.updateService(req.params.id, {
+  await Advertising.updateAdvertising(req.params.id, {
     ...req.body,
     image,
     banner_image,
-    permalink,
     ip_address: req.ip,
   });
 
-  res.json({ success: true, message: "Service Updated !" });
+  res.json({ success: true, message: "Advertising Updated !" });
 };
 
 export const toggleStatus = async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
-  await updateStatus("tbl_services", id, status);
+  await updateStatus("tbl_advertising", id, status);
   res.json({ success: true, message: "Status updated" });
 };
 
-export const removeService = async (req, res) => {
-  const service = await Service.getServiceById(req.params.id);
-  if (!service) return res.status(404).json({ message: "Not found" });
+export const removeAdvertising = async (req, res) => {
+  const advertising = await Advertising.getAdvertisingById(req.params.id);
+  if (!advertising) return res.status(404).json({ message: "Not found" });
 
   // 🔥 DELETE IMAGE FILE
-  if (service.image) {
-    const imgPath = path.join(IMAGE_DIR, service.image);
+  if (advertising.image) {
+    const imgPath = path.join(IMAGE_DIR, advertising.image);
     fs.existsSync(imgPath) && fs.unlinkSync(imgPath);
   }
-  if (service.banner_image) {
-    const imgPath = path.join(IMAGE_DIR, service.banner_image);
+  if (advertising.banner_image) {
+    const imgPath = path.join(IMAGE_DIR, advertising.banner_image);
     fs.existsSync(imgPath) && fs.unlinkSync(imgPath);
   }
 
-  await Service.deleteService(req.params.id);
-  res.json({ success: true, message: "Service Deleted" });
+  await Advertising.deleteAdvertising(req.params.id);
+  res.json({ success: true, message: "Advertising Deleted" });
 };
 
-// Clent site Services views
-export const viewServicesForClient = async (req, res) => {
+// Clent site Advertising views
+export const viewAdvertisingForClient = async (req, res) => {
   try {
-    const rows = await Service.getAllServicesForClient();
+    const rows = await Advertising.getAllAdvertisingForClient();
 
     const makeImage = (img) =>
-      img ? `${BASE_URL}/uploads/services/${img}` : "";
+      img ? `${BASE_URL}/uploads/advertising/${img}` : "";
 
     const formattedData = rows.map((row) => ({
       id: row.id,
-      category_id: row.category_id,
-      category_name: row.category_name,
-      category_slug: row.category_slug,
       name: row.name,
+      menu_name: row.menu_name,
       sub_title: row.sub_title,
       tagline: row.tagline,
       description: row.description,
       tagline2: row.tagline2,
-      bullet_point: row.bullet_point,
       description2: row.description2,
       image: makeImage(row.image),
       image_title: row.image_title,
@@ -137,7 +127,7 @@ export const viewServicesForClient = async (req, res) => {
     console.error(err);
     res.status(500).json({
       success: false,
-      message: "Failed to load services",
+      message: "Failed to load Advertising",
     });
   }
 };

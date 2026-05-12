@@ -47,3 +47,6 @@ router.get("/siteSettingForAdmin", protect, viewSiteSettingforAdmin);
 router.get("/siteSettingForClient", viewSiteSettingforClient);
 
 export default router;
+
+
+

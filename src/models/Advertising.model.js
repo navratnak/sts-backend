@@ -1,30 +1,29 @@
-// backend\src\models\service.model.js
+// backend\src\models\Advertising.model.js
 import db from "../config/db.js";
 
-export const getAllServices = async () => {
-  const [rows] = await db.query(`
-    SELECT s.*, c.name as category_name
-    FROM tbl_services s
-    JOIN tbl_servicecategory c ON c.id = s.category_id
-    ORDER BY s.id DESC
-  `);
+export const getAllAdvertising = async () => {
+  const [rows] = await db.query(
+    `SELECT * FROM tbl_advertising ORDER BY id DESC`,
+  );
   return rows;
 };
 
-export const getServiceById = async (id) => {
-  const [rows] = await db.query("SELECT * FROM tbl_services WHERE id=?", [id]);
+export const getAdvertisingById = async (id) => {
+  const [rows] = await db.query("SELECT * FROM tbl_advertising WHERE id=?", [
+    id,
+  ]);
   return rows[0];
 };
 
-export const createService = async (data) => {
+export const createAdvertising = async (data) => {
   const {
-    category_id,
     name,
+    permalink,
+    menu_name,
     sub_title,
     tagline,
     description,
     tagline2,
-    bullet_point,
     description2,
     image,
     image_title,
@@ -36,24 +35,22 @@ export const createService = async (data) => {
     meta_keyword,
     meta_description,
     created_by,
-    permalink,
     ip_address,
   } = data;
 
   const [result] = await db.query(
-    `INSERT INTO tbl_services 
-     (category_id,name,sub_title,permalink, tagline, description, tagline2,bullet_point, description2, image,image_title,image_alt, banner_image,
+    `INSERT INTO tbl_advertising 
+     (name,sub_title,permalink, menu_name ,tagline, description, tagline2, description2, image,image_title,image_alt, banner_image,
     bannerimage_title,bannerimage_alt,meta_title,meta_keyword,meta_description, created_by,ip_address)
-     VALUES (?,?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`,
+     VALUES (?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
-      category_id,
       name,
       sub_title,
       permalink,
+      menu_name,
       tagline,
       description,
       tagline2,
-      bullet_point,
       description2,
       image,
       image_title,
@@ -72,16 +69,15 @@ export const createService = async (data) => {
   return result.insertId;
 };
 
-export const updateService = async (id, data) => {
+export const updateAdvertising = async (id, data) => {
   const {
-    category_id,
     name,
     sub_title,
     permalink,
+    menu_name,
     tagline,
     description,
     tagline2,
-    bullet_point,
     description2,
     image,
     image_title,
@@ -95,18 +91,17 @@ export const updateService = async (id, data) => {
     ip_address,
   } = data;
   await db.query(
-    `UPDATE tbl_services 
-     SET category_id=?,name=?,sub_title=?, permalink=?, tagline=?, description=?,tagline2=?,bullet_point=?,description2=?, image=?, image_title=?, image_alt=?, banner_image=?, bannerimage_title=?, bannerimage_alt=?, meta_title=?, meta_keyword=?, meta_description=?, ip_address=?
+    `UPDATE tbl_advertising 
+     SET name=?,sub_title=?, permalink=?, menu_name=?,tagline=?, description=?,tagline2=?,description2=?, image=?, image_title=?, image_alt=?, banner_image=?, bannerimage_title=?, bannerimage_alt=?, meta_title=?, meta_keyword=?, meta_description=?, ip_address=?
      WHERE id=?`,
     [
-      category_id,
       name,
       sub_title,
       permalink,
+      menu_name,
       tagline,
       description,
       tagline2,
-      bullet_point,
       description2,
       image,
       image_title,
@@ -123,19 +118,14 @@ export const updateService = async (id, data) => {
   );
 };
 
-export const deleteService = async (id) => {
-  await db.query("DELETE FROM tbl_services WHERE id=?", [id]);
+export const deleteAdvertising = async (id) => {
+  await db.query("DELETE FROM tbl_advertising WHERE id=?", [id]);
 };
 
-// Clent site Services views
-export const getAllServicesForClient = async () => {
+// Clent site Advertising views
+export const getAllAdvertisingForClient = async () => {
   const [rows] = await db.query(
-    ` SELECT s.*, c.name as category_name,
-     c.permalink AS category_slug
-    FROM tbl_services s
-    JOIN tbl_servicecategory c ON c.id = s.category_id
-    WHERE s.website_view_status = '1'
-    ORDER BY s.id ASC`,
+    "SELECT * FROM tbl_advertising WHERE website_view_status='1'",
   );
   return rows;
 };
